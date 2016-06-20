@@ -192,7 +192,20 @@ FREE                            #       0                      ;start of everyth
 CFLAG                           *       &20000000
 SAFECRUNCH                      *       15
 
+TEST_MSG = "Hello world!"
+        EXPORT  MODULEMAIN
 MODULEMAIN
+        ; syscall write(int fd, const void *buf, size_t count) 
+        mov r0, #1     ; fd = stdout 
+        adr r1, TEST_MSG
+        mov r2, #12
+        mov r7, #4     ; syscall #4 (write) 
+        swi 0          ; invoke syscall 
+
+        ; syscall exit(int status)
+        mov r0, #0     ; status = 0
+        mov r7, #1     ; syscall #1 (exit)
+        swi #0         ; invoke syscall
 
  [ DO32BIT = 1
         MRS     R1,CPSR
